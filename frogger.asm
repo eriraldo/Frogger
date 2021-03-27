@@ -72,7 +72,7 @@ move_truck:
 	call check_truck_colission
 
 	; Draw the truck head "XX"
-	mov cl,byte[vehicle]
+	mov cl,byte[van]
 	mov byte[board+eax],cl
 
 	; Set the truck default position to the first 'X'
@@ -101,7 +101,7 @@ move_bus:
 	call check_bus_colission
 
 	; Draw the bus head "XXX"
-	mov cl,byte[vehicle]
+	mov cl,byte[bus]
 	mov byte[board+eax],cl
 
 	; Set the truck default position to the first 'X'
@@ -148,7 +148,7 @@ restart_car:
 	sub eax,2
 	add eax,[board_cols]
 
-	; Draw the "X" at the end of the row
+	; Draw the "-" at the end of the row
 	xor ecx,ecx
 	mov cl,byte[vehicle]
 	mov byte[board+eax],cl
@@ -160,7 +160,7 @@ restart_car:
 
 ; This subroutine restart the truck position to the first left position
 restart_truck:
-	; Delete the 2 truck 'XX'
+	; Delete the 2 van '@@'
 	mov cl,byte[empty_cell]
 	mov byte[board+eax],cl
 
@@ -171,14 +171,14 @@ restart_truck:
 	add eax,4
 	sub eax,[board_cols]
 
-	; Draw the 'XX' at the begining of the row
+	; Draw the '@@' at the begining of the row
 	xor ecx,ecx
-	mov cl,byte[vehicle]
+	mov cl,byte[van]
 	mov byte[board+eax],cl
 	add eax,2
 	mov byte[board+eax],cl
 
-	; Set the truck default position to the first 'X'
+	; Set the truck default position to the first '@'
 	sub eax,2
 
 	; Update truck postion
@@ -202,16 +202,16 @@ restart_bus:
 	add eax,6
 	sub eax,[board_cols]
 
-	; Draw the 'XXX' at the begining of the row
+	; Draw the ']]]' at the begining of the row
 	xor ecx,ecx
-	mov cl,byte[vehicle]
+	mov cl,byte[bus]
 	mov byte[board+eax],cl
 	add eax,2
 	mov byte[board+eax],cl
 	add eax,2
 	mov byte[board+eax],cl
 
-	; Set the bus default position to the first 'X'
+	; Set the bus default position to the first ']'
 	sub eax,4
 
 	; Update the bus position
@@ -541,16 +541,19 @@ section '.data' data readable writeable
 	len_board				dd		504
 
 	board								du		13,10,'__________________________________',\
-												13,10,'__________________________________',\
-												13,10,'__________________________________',\
-												13,10,'___XXX____________________________',\
-												13,10,'___________________XX_____________',\
-								 				13,10,'___________X______________________',\
+												13,10,'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',\
+												13,10,'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',\
+												13,10,'___]]]____________________________',\
+												13,10,'___________________@@_____________',\
+								 				13,10,'___________-______________________',\
 								 				13,10,'_________________R________________',13,10,0
 
 	frog						du		'R'
  	empty_cell			du		'_'
-	vehicle					du		'X'
+	water				du  	'~'
+	vehicle					du		'-'
+	van					du		'@'
+	bus					du		']'
 	INPUT_KEY				EFI_INPUT_KEY
 	MinCod   EQU 4Bh
 	; Output Messages
