@@ -1,7 +1,4 @@
-; Frogger UEFI application made by Isaac Mena López
-; Principios de Sistemas Oprativos - TEC
-; 27-29/02/19
-
+; Frogger UEFI bootable
 format pe64 dll efi
 entry main
 
@@ -117,7 +114,7 @@ move_bus:
 ; This subroutine checks if the car has reached the left limit
 car_reach_end:
 	add eax,2
-	cmp eax,[left_limit_row4]
+	cmp eax,[left_limit_row6]
 	je restart_car
 
 	sub eax,2
@@ -126,7 +123,7 @@ car_reach_end:
 ; This subroutine checks if the car has reached the right limit
 truck_reach_end:
 	sub eax,2
-	cmp eax,[right_limit_row3]
+	cmp eax,[right_limit_row5]
 	je restart_truck
 
 	add eax,2
@@ -135,7 +132,7 @@ truck_reach_end:
 ; This subroutine checks if the car has reached the right limit
 bus_reach_end:
 	sub eax,2
-	cmp eax,[right_limit_row2]
+	cmp eax,[right_limit_row4]
 	je restart_bus
 
 	add eax,2
@@ -414,7 +411,7 @@ check_game_over:
 ; Check if the frog is in the 5th row (where starts)
 check_first_row:
 	add eax,72
-	cmp eax, [right_limit_row5]
+	cmp eax, [right_limit_row7]
 	jg play
 
 	sub eax,72
@@ -428,6 +425,10 @@ check_win_game:
 ; Check if frog_position has reached a left limit
 right_limit_reached:
 	sub eax,2
+	cmp eax,[right_limit_row7]
+	je restart_frog_to_left
+	cmp eax,[right_limit_row6]
+	je restart_frog_to_left
 	cmp eax,[right_limit_row5]
 	je restart_frog_to_left
 	cmp eax,[right_limit_row4]
@@ -463,6 +464,10 @@ restart_frog_to_left:
 left_limit_reached:
 	; Because must check the left limit position
 	add eax,2
+	cmp eax,[left_limit_row7]
+	je restart_frog_to_right
+	cmp eax,[left_limit_row6]
+	je restart_frog_to_right
 	cmp eax,[left_limit_row5]
 	je restart_frog_to_right
 	cmp eax,[left_limit_row4]
@@ -516,22 +521,28 @@ section '.data' data readable writeable
 	right_limit_row3	dd		214
 	right_limit_row4	dd		286
 	right_limit_row5	dd		358
+	right_limit_row6	dd		430
+	right_limit_row7	dd		502
 
 	left_limit_row1	dd		8
 	left_limit_row2	dd		76
 	left_limit_row3	dd		148
 	left_limit_row4	dd		220
 	left_limit_row5	dd		292
+	left_limit_row6	dd		364
+	left_limit_row7	dd		436
 
-	frog_position		dd		326
-	bus_position		dd		80
-	truck_position	dd		182
-	car_position		dd		242
-	board_rows			dd		5
+	frog_position		dd		470
+	bus_position		dd		224
+	truck_position	dd		326
+	car_position		dd		386
+	board_rows			dd		7
 	board_cols			dd		68
-	len_board				dd		360
+	len_board				dd		504
 
 	board								du		13,10,'__________________________________',\
+												13,10,'__________________________________',\
+												13,10,'__________________________________',\
 												13,10,'___XXX____________________________',\
 												13,10,'___________________XX_____________',\
 								 				13,10,'___________X______________________',\
